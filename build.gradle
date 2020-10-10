@@ -1,0 +1,91 @@
+buildscript {
+	repositories {
+		jcenter()
+	}
+}
+
+plugins {
+	id 'org.springframework.boot' version '2.3.1.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'java'
+	id 'eclipse'
+}
+
+group = 'sk.simko'
+version = '0.0.2-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+  compileOnly {
+    extendsFrom annotationProcessor
+  }
+}
+
+repositories {
+    jcenter()
+}
+
+/*sourceSets {
+    test.compileClasspath += configurations.compileOnly
+    test.runtimeClasspath += configurations.compileOnly
+}*/
+
+jar {
+	archiveBaseName = 'microservices-backend'
+	archiveVersion = '1.0.0-SNAPSHOT'
+}
+
+/*compileTestJava {
+	sourceCompatibility = 1.8
+	targetCompatibility = 1.8
+	options.compilerArgs += '-parameters'
+}*/
+
+test {
+    testLogging.showStandardStreams = true
+
+	useJUnitPlatform {
+		includeEngines 'junit-jupiter'
+
+		includeTags 'fast'
+		excludeTags 'slow'
+		// includeClassNamePattern '.*Test'
+
+		// reportsDir file('build/test-results/junit-platform') // this is the default
+		//logManager 'org.apache.logging.log4j.jul.LogManager'
+	}
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
+
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	//runtimeOnly 'org.postgresql:postgresql'
+	runtimeOnly 'com.h2database:h2'
+}
+
+eclipse {	 
+  classpath {
+	downloadSources = true
+	downloadJavadoc = true
+  }
+} 
+
+task resolveDependencies {
+  setDescription "Resolves all projects dependencies from the repository."
+  setGroup "Build Server"
+
+	doLast {
+	    rootProject.allprojects { project ->
+	        Set<Configuration> configurations = project.buildscript.configurations + project.configurations
+	        configurations.findAll { c -> c.canBeResolved }
+	                .forEach { c -> c.resolve() }
+	    }
+	}
+}

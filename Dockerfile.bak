@@ -1,0 +1,26 @@
+FROM gradle:6.3.0-jdk11 as build
+WORKDIR /app
+#ENV GRADLE_USER_HOME /cache
+#COPY build.gradle settings.gradle ./
+
+#FROM gradle:6.3.0-jdk11 as build
+#WORKDIR /app
+#COPY --from=cache /cache /home/gradle/.gradle
+COPY build.gradle settings.gradle ./
+#RUN gradle --no-daemon --version --stacktrace --info 2>&1 || true
+RUN gradle --no-daemon resolveDependencies --info --stacktrace
+
+RUN echo 'source changed 4'
+COPY src/ src/
+
+RUN gradle --no-daemon build --stacktrace --info
+RUN mkdir -p build/dependency && (cd build/dependency; jar -xf ../libs/*.jar)
+
+
+FROM openjdk:11-jdk
+ARG DEPENDENCY=/app/build/dependency
+COPY --from=build ${DEPENDENCY}/META-INF /app/META-INF
+COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /app/lib
+COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /app
+COPY --from=build ${DEPENDENCY}/org /app
+ENTRYPOINT ["java","-cp","app:app/lib/*","sk.simko.microservices.backend.MicroservicesBackendApplication"]

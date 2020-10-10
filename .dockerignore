@@ -1,0 +1,10 @@
+.gradle/
+.settings/
+.project
+.classpath
+.gitignore
+.gitattributes
+readme.md
+bin/
+build/
+gradle/
