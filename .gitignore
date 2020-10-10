@@ -9,5 +9,3 @@ build
 .classpath
 bin/
 build/
-gradle/
-gradlew*
