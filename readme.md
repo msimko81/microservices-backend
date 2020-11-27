@@ -33,9 +33,9 @@ curl --location --request POST 'localhost:8080/save' \
 
 ### Build docker image with backend application using two stage docker build
 
-```DOCKER_BUILDKIT=1 docker build -t miro/backend .```
+```DOCKER_BUILDKIT=1 docker build -t simko/microservices-backend .```
 
 ### Run backend application in docker container
 
-```docker run -it miro/backend```
+```docker run -it simko/microservices-backend```
 
