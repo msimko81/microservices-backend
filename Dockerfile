@@ -1,12 +1,13 @@
 # syntax=docker/dockerfile:experimental
-FROM gradle:6.3.0-jdk11 as build
+FROM gradle:6.7.1-jdk11 as build
 WORKDIR /app
 
 COPY --chown=gradle:gradle . /app
 
 RUN echo 'source changed 6'
 
-RUN --mount=type=cache,target=/root/.gradle gradle build --no-daemon --info --stacktrace
+#RUN --mount=type=cache,target=/root/.gradle gradle build --no-daemon --info --stacktrace
+RUN gradle build --no-daemon --info --stacktrace
 RUN mkdir -p build/dependency && (cd build/dependency; jar -xf ../libs/*.jar)
 
 FROM openjdk:11-jdk
