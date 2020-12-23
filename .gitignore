@@ -11,3 +11,6 @@ bin/
 build/
 
 .idea
+
+azure.sh
+
