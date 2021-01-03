@@ -1,6 +1,6 @@
 version: '3'
 services:
   web:
-    image: simko/microservices-backend
+    image: msimko81/microservices-backend
     ports: 
       - "8080:8080"
