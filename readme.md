@@ -2,7 +2,12 @@
 
 ## Endpoints
 
-There are two simple endpoints.
+There are three simple endpoints.
+
+[Info](http://localhost:8080/info)
+```
+curl --location --request GET 'localhost:8080/info'
+```
 
 [List](http://localhost:8080/list)
 ```
