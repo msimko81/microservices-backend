@@ -20,7 +20,7 @@ public class HelloController {
 	@GetMapping("/info")
 	@SneakyThrows
 	public Info info() {
-		return new Info(InetAddress.getLocalHost().toString());
+		return new Info(InetAddress.getLocalHost().toString(), "0.0.2.RELEASE");
 	}
 	
 	@PostMapping("/save")
